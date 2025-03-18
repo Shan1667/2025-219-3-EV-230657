@@ -7,9 +7,10 @@ import pandas as pd
 import numbers
 
 
-cred = credentials.Certificate("lc-project-2025-2269a-firebase-adminsdk-85ep1-946b0c6354.json")
-firebase_admin.initialize_app(cred, {"databaseURL":'https://lc-project-2025-2269a-default-rtdb.europe-west1.firebasedatabase.app/Movies'})
-ref = db.reference('/main_genre')#reference the root node of the database
+cred = credentials.Certificate("lcproject2025-7a740-firebase-adminsdk-fbsvc-a987fa3758.json")
+firebase_admin.initialize_app(cred, {"databaseURL":'https://lcproject2025-7a740-default-rtdb.europe-west1.firebasedatabase.app/'})
+
+ref = db.reference('/Data_for_movie_graph')#reference the root node of the database
  
 y = ref.get()
 comedy = 0

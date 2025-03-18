@@ -17,8 +17,8 @@ missing_values = df.isnull().sum()
 print(missing_values)
 
 x = df.to_dict()
-cred = credentials.Certificate("lc-project-2025-2269a-firebase-adminsdk-85ep1-946b0c6354.json")
-firebase_admin.initialize_app(cred, {"databaseURL":'https://lc-project-2025-2269a-default-rtdb.europe-west1.firebasedatabase.app/Movies'})
+cred = credentials.Certificate("lcproject2025-7a740-firebase-adminsdk-fbsvc-a987fa3758.json")
+firebase_admin.initialize_app(cred, {"databaseURL":'https://lcproject2025-7a740-default-rtdb.europe-west1.firebasedatabase.app/'})
 ref = db.reference('/Cleaned_tv_show_data_from_file')#reference the root node of the database
  
 ref.set(x)
