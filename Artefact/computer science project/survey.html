@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <title>SURVEY!</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <style>
+    ul.a {
+  list-style-type: upper-roman;
+}
+  </style>
+</head>
+ 
+<body>
+  <ul class="a">
+    <li><a href="./Website2.html">Visit webiste</a></li></li>
+</ul>
+  <h1>SURVEY</h1>
+  <h2>when choosing what your favorite genre is please enter the name of it correct so the graph can function</h2>
+  <form id="userSurvey">
+    <fieldset div class="salary">
+      <!-- <label>What best describes your current salary?</label>
+      <select id="dropdown">
+          <option value="above £30K">above £30k</option>
+          <option value="less than £30k">less than £30K</option>
+      </select> -->
+  </fieldset>
+    <fieldset>
+      <label for="name">Name:<input id="name" type="text" placeholder="Enter your full name" required maxlength="20" /></label>
+      <label for="age">Age:<input id="age" type="number" placeholder="Enter your age" required min="0"/></label>
+    </fieldset>
+    <fieldset>
+      <legend>Do you prefer watching Tv-Shows or Movies?:</legend>
+ 
+      <div>
+        <input type="radio" id="TvShowslable" name="drone" value="Tv-Shows" checked />
+        <label for="Tv-Shows">Tv-Shows</label>
+        <input type="radio" id="Movielable" name="drone" value="Movie" />
+        <label for="Movie">Movies</label>
+      </div>
+ 
+    </fieldset>
+    <fieldset>
+      <label for="question">what is your favorite Tv-show genre of all time?:<input id="TvShowgenre"type="text" required></label>
+      <label for="tvshowpoint">write your answer in the box to the left. the box to the right shows all of the options and how to spell them:</label>
+ 
+ 
+<select name="tvshowpoint" id="tvshowpoint2">
+  <option value="action">action</option>
+  <option value="drama">drama</option>
+  <option value="comedy">comedy</option>
+  <option value="thriller">thriller</option>
+  <option value="romance">romance</option>
+  <option value="animation">animation</option>
+  <option value="scifi">scifi</option>
+  <option value="documentary">documentary</option>
+  <option value="crime">crime</option>
+  <option value="western">western</option>
+  <option value="fantasy">fantasy</option>
+  <option value="war">war</option>
+</select>
+    </fieldset>
+    <fieldset>
+      <label for="question2">what is your favorite Movie genre of all time?:<input id="Moviegenre" type="text" required></label>
+      <label for="moviepoint">write your answer in the box to the left. the box to the right shows all of the options and how to spell them:</label>
+      <select name="moviepoint" id="moviepoint2">
+        <option value="action">action</option>
+        <option value="drama">drama</option>
+        <option value="comedy">comedy</option>
+        <option value="thriller">thriller</option>
+        <option value="romance">romance</option>
+        <option value="animation">animation</option>
+        <option value="scifi">scifi</option>
+        <option value="documentary">documentary</option>
+        <option value="crime">crime</option>
+        <option value="western">western</option>
+        <option value="fantasy">fantasy</option>
+        <option value="war">war</option>
+        <option value="musical">musical</option>
+        <option value="sports">sports</option>
+        <option value="horror">horror</option>
+      </select>
+      
+ </fieldset>
+ <fieldset>
+  <label for="suggestion">if you have any suggestions or any ideas please eneter them in the box:<input id="name" type="text" placeholder="Enter your suggestion" required /></label>
+ </fieldset>
+  <input id='submit' type="submit">
+  </form>
+  <button id="survey_results">view results</button>
+  <h2>after completing the survey and are finished looking at the results please refresh the page</h2>
+  <h2>The graph below shows the result of the information given and converts it into a graph (P.S. press view results twice to see the graph working!) </h2>
+  <h2> This graph here shows the popular Movies genre</h2>
+  <div id="MoviesGraph" style="width: 1200px; height:600px;">
+  <canvas id="myChart2"></canvas>
+</div>
+<div id="showsGraph" style="width: 1200px; height:600px;">
+  <canvas id="myChart2"></canvas>
+  <canvas id="myChart3"></canvas>
+  <script type="module">
+ 
+    //let surveycompleted = document.getElementById('surveyanswers')
+    //surveycompleted.addEventListener('CLICK ME',handleInput)
+ 
+ 
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+ 
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_2F2GrlWDBU_5GhOzMZLCxYg_-qgTsyA",
+      authDomain: "lc-project-2025-2269a.firebaseapp.com",
+      databaseURL: "https://lc-project-2025-2269a-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "lc-project-2025-2269a",
+      storageBucket: "lc-project-2025-2269a.firebasestorage.app",
+      messagingSenderId: "1077764091378",
+      appId: "1:1077764091378:web:e5d87cdfccaf7e2e774f6b"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+ 
+    import { getDatabase, ref, set, get, update, child, push } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+    const database = getDatabase(); //This creates a firebase instance
+    // let link_to_database_root = ref(database); //This creates a reference (link) to the root of your database
+    //This will create a reference to whatever address comes after the comma
+    let firebaseRef = ref(database);
+ 
+ 
+    let fruit = document.getElementById('userSurvey')
+    fruit.addEventListener('submit', handleInput)
+ 
+    function handleInput(event) {
+      event.preventDefault()
+      alert('Thank you for doing the survey')
+      let surveylist = {}
+      let apple = document.getElementById("name")
+      let banana = document.getElementById("age")
+      let strawberrry = document.getElementById("TvShowgenre")
+      let blueberry = document.getElementById("Moviegenre")
+      let kiwi = document.getElementById("TvShowslable")
+      let pear = document.getElementById("Movielable")
+      let cherry = document.getElementById("suggestion")
+      let valueName = document.querySelector('input[name="drone"]:checked').value;
+      console.log(valueName)
+      console.log(apple.value)
+      console.log(banana.value)
+      console.log(strawberrry.value)
+      console.log(blueberry.value)
+      //console.log(cherry.value)
+      //console.log(kiwi.value)
+      //console.log(pear.value)
+      surveylist["name"] = apple.value;
+      surveylist["age"] = banana.value;
+      surveylist["TvShowgenre"] = strawberrry.value;
+      surveylist["Moviegenre"] = blueberry.value;
+      //surveylist[TvShowlable] = kiwi.value;
+      surveylist["Movielable"] = valueName;
+      //surveylist["suggestion"] = cherry.value;
+      // firebaseRef = ref(database, '/surveyresults');
+      console.log(surveylist)
+ 
+ 
+      push(child(firebaseRef, "/surveyresults/"), surveylist)
+      alert('Data added to survey results')
+ 
+    }
+    let movieDataTV = {}
+    let romancescoreTV = 0
+    let animationscoreTV = 0
+    let documentaryscoreTV = 0
+    let crimescoreTV = 0
+    let westernscoreTV = 0
+    let comedyscoreTV = 0
+    let thrillerscoreTV = 0
+    let scifiscoreTV = 0
+    let dramascoreTV = 0
+    let actionscoreTV = 0
+    let warscoreTV = 0
+    let fantasyscoreTV = 0
+ 
+ 
+    let actionscoreMV = 0
+    let romancescoreMV = 0
+    let animationscoreMV = 0
+    let documentaryscoreMV = 0
+    let crimescoreMV = 0
+    let westernscoreMV = 0
+    let comedyscoreMV = 0
+    let thrillerscoreMV = 0
+    let scifiscoreMV = 0
+    let dramascoreMV = 0
+    let fantasyscoreMV = 0
+    let warscoreMV = 0
+    let musicalscoreMV = 0
+    let sportscoreMV = 0
+    let horrorscoreMV = 0
+ 
+ 
+ 
+    let surveyResults = document.getElementById("survey_results")
+    surveyResults.addEventListener('click', surveyView)
+    function surveyView(event) {
+      get(child(firebaseRef, "/surveyresults/")).then(
+        (snapshot) => {
+          console.log('here are the results', Object.values(snapshot.val()))
+          movieDataTV = Object.values(snapshot.val())
+          console.log('This is the moviedata', movieDataTV)
+ 
+          for (let [movie, genre] of Object.entries(movieDataTV)) {
+            console.log('Genre is: ', genre)
+            console.log('Movie genre is: ',genre['Moviegenre'])
+ 
+          
+              // alert('the movie',genre['Moviegenre'])
+ 
+              if (genre['TvShowgenre'] == "action") {
+                actionscoreTV = actionscoreTV + 1
+                //alert('action score is:'+ actionscoreTV)
+                }
+               if (genre['TvShowgenre'] == 'drama') {
+                dramascoreTV = dramascoreTV + 1
+                //console.log(dramascoreTV)
+                //alert('drama score is:'+ dramascoreTV )
+              }
+               if (genre['TvShowgenre'] == "comedy") {
+                comedyscoreTV = comedyscoreTV + 1
+                //alert('comedy score is:'+ comedyscoreTV)
+              }
+               if (genre['TvShowgenre'] == "thriller") {
+                thrillerscoreTV = thrillerscoreTV + 1
+                //alert('thriller score is:'+ thrillerscoreTV)
+              }
+               if (genre['TvShowgenre'] == "romance") {
+                romancescoreTV = romancescoreTV + 1
+                //alert('romance score is:'+ romancescoreTV)
+              }
+               if (genre['TvShowgenre'] == "animation") {
+                animationscoreTV = animationscoreTV + 1
+                //alert('animation score is:'+ animationscoreTV)
+              }
+               if (genre['TvShowgenre'] == "scifi") {
+                scifiscoreTV = scifiscoreTV + 1
+                //alert('scifi score is:'+ scifiscoreTV)
+              }
+               if (genre['TvShowgenre'] == "documentary") {
+                documentaryscoreTV = documentaryscoreTV + 1
+                //alert('documentary score is:'+ documentaryscoreTV)
+              }
+               if (genre['TvShowgenre'] == "crime") {
+                crimescoreTV = crimescoreTV + 1
+                //alert('crime score is:'+ crimescoreTV)
+              }
+               if (genre['TvShowgenre'] == "western") {
+                westernscoreTV = westernscoreTV + 1
+                //alert('western score is:'+ westernscoreTV)
+              }
+               if (genre['TvShowgenre'] == "fantasy") {
+                fantasyscoreTV = fantasyscoreTV + 1
+                //alert('fantasy score is:'+ fantasyscoreTV)
+              }
+               if (genre['TvShowgenre'] == "war") {
+                warscoreTV = warscoreTV + 1
+                //alert('war score is:'+ warscoreTV)
+              }
+            
+            
+              // console.log('Movie genre is: ',genre['Moviegenre'])
+              if (genre['Moviegenre'] == "action") {
+                
+                actionscoreMV = actionscoreMV + 1
+                //alert('movie action score is:'+ actionscoreMV)
+                }
+               if (genre['Moviegenre'] == 'drama') {
+                dramascoreMV = dramascoreMV + 1
+                //alert('drama score is:'+ dramascoreMV)
+              }
+               if (genre['Moviegenre'] == "comedy") {
+                comedyscoreMV = comedyscoreMV + 1
+                //alert('comedy score is:'+ comedyscoreMV)
+              }
+               if (genre['Moviegenre'] == "thriller") {
+                thrillerscoreMV = thrillerscoreMV + 1
+                //alert('thriller score is:'+ thrillerscoreMV)
+              }
+               if (genre['Moviegenre'] == "romance") {
+                romancescoreMV = romancescoreMV + 1
+                //alert('romance score is:'+ romancescoreMV)
+              }
+               if (genre['Moviegenre'] == "animation") {
+                animationscoreMV = animationscoreMV + 1
+                //alert('animation score is:'+ animationscoreMV)
+              }
+               if (genre['Moviegenre'] == "scifi") {
+                scifiscoreMV = scifiscoreMV + 1
+                //alert('SciFi score is:'+ scifiscoreMV)
+              }
+               if (genre['Moviegenre'] == "documentary") {
+                documentaryscoreMV = documentaryscoreMV + 1
+                //alert('documentary score is:'+ documentaryscoreMV)
+              }
+               if (genre['Moviegenre'] == "crime") {
+                crimescoreMV = crimescoreMV + 1
+                //alert('crime score is:'+ crimescoreMV)
+              }
+               if (genre['Moviegenre'] == "western") {
+                westernscoreMV = westernscoreMV + 1
+                //alert('western score is:'+ westernscoreMV)
+              }
+               if (genre['Moviegenre'] == "fantasy") {
+                fantasyscoreMV = fantasyscoreMV + 1
+                //alert('fantasy score is:'+ fantasyscoreMV)
+              }
+               if (genre['Moviegenre'] == "war") {
+                warscoreMV = warscoreMV + 1
+                //alert('war score is:'+ westernscoreMV)
+              }
+               if (genre['Moviegenre'] == "musical") {
+                musicalscoreMV = musicalscoreMV + 1
+                //alert('music score is:'+ musicalscoreMV)
+              }
+               if (genre['Moviegenre'] == "sports") {
+                sportscoreMV = sportscoreMV + 1
+                //alert('sports score is:'+ sportscoreMV)
+              }
+               if (genre['Moviegenre'] == "horror") {
+                horrorscoreMV = horrorscoreMV + 1
+                //alert('horror score is:'+ horrorscoreMV)
+              }
+            else{console.log(genre)}
+          }
+ 
+ 
+//  Console log statements for debugging
+          console.log('actionScore', actionscoreTV)
+          console.log('SciFiScore',scifiscoreTV)
+          console.log('ComedyScore',comedyscoreTV)
+          console.log('ThrillerScore',thrillerscoreTV)
+          console.log('FantasyScore',fantasyscoreTV)
+          console.log('ThrillerScore',westernscoreTV)
+          console.log('DramaScore',dramascoreTV)
+          console.log('CrimeScore',crimescoreTV)
+          console.log('WarScore',warscoreTV)
+          console.log('AnimationScore',animationscoreTV)
+          console.log('WesternScore',westernscoreTV)
+          console.log('RomanceScore',romancescoreTV)
+          console.log()
+ 
+          console.log("--------------------------------")
+ 
+          console.log('actionScore for movie', actionscoreMV)
+          console.log('SciFiScore for movie',scifiscoreMV)
+          console.log('ComedyScore for movie',comedyscoreMV)
+          console.log('ThrillerScore for movie',thrillerscoreMV)
+          console.log('FantasyScore for movie',fantasyscoreMV)
+          console.log('ThrillerScore for movie',westernscoreMV)
+          console.log('DramaScore for movie',dramascoreMV)
+          console.log('CrimeScore for movie',crimescoreMV)
+          console.log('WarScore for movie',warscoreMV)
+          console.log('AnimationScore for movie',animationscoreMV)
+          console.log('WesternScore for movie',westernscoreMV)
+          console.log('RomanceScore for movie',romancescoreMV)
+          console.log('horrorScore for movie', horrorscoreMV)
+          console.log('MusicalScore for movie', musicalscoreMV)
+          console.log('SportsScore for movie', sportscoreMV)
+          console.log()
+        })
+      let surveyDataMovies = {'Action':actionscoreMV, 'Romance':romancescoreMV, 'Animation':animationscoreMV, 'Documentary':documentaryscoreMV, 'Crime':crimescoreMV, 'Western':westernscoreMV, 'Comedy':comedyscoreMV, 'Thriller':thrillerscoreTV, 'Sci-FI':scifiscoreMV, 'Fantasy':fantasyscoreMV, 'War':warscoreMV,'Musical':musicalscoreMV, 'Sport':sportscoreMV, 'Horror':horrorscoreMV}
+      let surveyDataShows = {'Action':actionscoreTV, 'Romance':romancescoreTV, 'Animation':animationscoreTV, 'Documentary':documentaryscoreTV, 'Crime':crimescoreTV, 'Western':westernscoreTV, 'Comedy':comedyscoreTV, 'Thriller':thrillerscoreTV, 'Sci-FI':scifiscoreTV, 'Fantasy':fantasyscoreTV, 'War':warscoreTV}
+      create_responsive_graphs2(Object.keys(surveyDataMovies),Object.values(surveyDataMovies))
+      create_responsive_graphs3(Object.keys(surveyDataShows),Object.values(surveyDataShows))
+    };
+ 
+    function create_responsive_graphs2(x, y) {
+      const xValues = x//["action", "drama", "comedy", "thriller", "romance", "animation", "SciFi", "documentary", "crime", "western", "fantasy", "war"];
+      const yValues = y//[actionscoreTV, dramascoreTV, comedyscoreTV, thrillerscoreTV, romancescoreTV, animationscoreTV, scifiscoreTV, documentaryscoreTV, crimescoreTV, westernscoreTV, fantasyscoreTV, warscoreTV]
+        
+      console.log('this is', xValues)
+      console.log('this is', yValues)
+      new Chart(document.getElementById("myChart2"), {
+        type: "bar",
+        data: {
+          labels: xValues,
+          datasets: [{
+ 
+ 
+            data: yValues,
+            backgroundColor: ['red', "orange", "yellow", "pink", "purple", "cyan", "blue", "lime", "green", "brown", "crimson", "grey", "violet", "navy"]
+
+          }]
+        },
+        options: {
+                    legend: {
+                        display: false
+                    },
+
+                    title: { display: true, text: 'Movies genre' },
+                    responsive: true,
+                maintainAspectRatio: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: { beginAtZero: true }, scaleLabel: {
+                                display: true,
+                                labelString: 'Score'
+                            }
+                        }], xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Genre'
+                            }
+                        }],
+                    }
+
+
+
+
+                }
+            });
+    
+ 
+    }
+ 
+ 
+ 
+ 
+    
+    create_responsive_graphs3(Object.keys(movieDataTV),Object.values(movieDataTV))
+ 
+    function create_responsive_graphs3(x, y) {
+      const xValues = x//["action", "drama", "comedy", "thriller", "romance", "animation", "SciFi", "documentary", "crime", "western", "fantasy", "war", "musical", "sports", "horror"];
+      const yValues = y//[actionscoreTV, dramascoreTV, comedyscoreTV, thrillerscoreTV, romancescoreTV, animationscoreTV, scifiscoreTV, documentaryscoreTV, crimescoreTV, westernscoreTV, fantasyscoreTV, warscoreTV, musicalscoreMV, sportscoreMV, horrorscoreMV]
+ 
+      console.log('this is', xValues)
+      console.log('this is', yValues)
+      new Chart(document.getElementById("myChart3"), {
+        type: "bar",
+        data: {
+          labels: xValues,
+          datasets: [{
+ 
+ 
+            data: yValues,
+            backgroundColor: ['red', "orange", "yellow", "pink", "purple", "cyan", "blue", "lime", "green", "brown", "black", "grey"]
+          }]
+        },
+        options: {
+                    legend: {
+                        display: false
+                    },
+
+                    title: { display: true, text: 'Tv-Show genre' },
+                    scales: {
+                        yAxes: [{
+                            ticks: { beginAtZero: true }, scaleLabel: {
+                                display: true,
+                                labelString: 'Score '
+                            }
+                        }], xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Genre'
+                            }
+                        }],
+                    }
+                  }
+      });
+ 
+    }
+ 
+ 
+ 
+ 
+
+ 
+ 
+  </script>
+</body>
+ 
+</html>
